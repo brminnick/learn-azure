@@ -31,6 +31,8 @@ namespace Yammerly.ViewModels
 
             try
             {
+                var client = DependencyService.Get<IDataService>() as AzureService;
+                await DependencyService.Get<IAuthenticationService>().LoginAsync(client.MobileService, MobileServiceAuthenticationProvider.WindowsAzureActiveDirectory);
 
             }
             catch (Exception ex)

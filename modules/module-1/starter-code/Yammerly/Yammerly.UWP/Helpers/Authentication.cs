@@ -17,7 +17,35 @@ namespace Yammerly.UWP.Helpers
     {
         public async Task<bool> LoginAsync(IMobileServiceClient client, MobileServiceAuthenticationProvider provider)
         {
-            return true;
+            var success = false;
+
+            try
+            {
+                var user = await client.LoginAsync(provider);
+
+                if (user != null)
+                {
+                    Settings.AuthToken = user.MobileServiceAuthenticationToken;
+
+                    var employee = await client.InvokeApiAsync<Employee>("UserInfo", System.Net.Http.HttpMethod.Get, null);
+                    Settings.FirstName = employee.FirstName;
+                    Settings.LastName = employee.LastName;
+                    Settings.PhotoUrl = employee.PhotoUrl;
+                    Settings.UserId = employee.Id;
+
+                    Xamarin.Forms.Application.Current.MainPage = new RootPage();
+
+                    return true;
+                }
+
+                return false;
+            }
+            catch (Exception ex)
+            {
+                System.Diagnostics.Debug.WriteLine($"Error logging in: {ex.Message}");
+            }
+
+            return success;
         }
     }
 }

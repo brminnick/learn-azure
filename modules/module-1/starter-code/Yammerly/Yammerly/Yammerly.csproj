@@ -43,6 +43,7 @@
     <Compile Include="Controls\CardViewProfileCell.cs" />
     <Compile Include="Helpers\AuthenticationRefreshHandler.cs" />
     <Compile Include="Helpers\Settings.cs" />
+    <Compile Include="Helpers\SyncHandler.cs" />
     <Compile Include="Models\Employee.cs" />
     <Compile Include="Models\EntityData.cs" />
     <Compile Include="Models\HomeMenuItem.cs" />

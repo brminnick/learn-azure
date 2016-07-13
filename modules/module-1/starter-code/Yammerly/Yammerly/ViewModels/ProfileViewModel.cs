@@ -106,7 +106,30 @@ namespace Yammerly.ViewModels
 
             try
             {
+                await CrossMedia.Current.Initialize();
 
+                MediaFile file;
+                if (CrossMedia.Current.IsCameraAvailable)
+                {
+                    file = await CrossMedia.Current.TakePhotoAsync(new StoreCameraMediaOptions
+                    {
+                        Directory = "Photos",
+                        Name = "photo.jpg"
+                    });
+                }
+                else
+                {
+                    file = await CrossMedia.Current.PickPhotoAsync();
+                }
+
+                var client = DependencyService.Get<IDataService>() as AzureService;
+                var url = await client.StoreBlob(file.GetStream());
+                Settings.PhotoUrl = url;
+                PhotoUrl = url;
+
+                var user = await client.GetItem<Employee>(Settings.UserId);
+                user.PhotoUrl = url;
+                await client.UpdateItem(user);
             }
             catch (Exception ex)
             {

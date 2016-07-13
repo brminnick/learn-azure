@@ -19,7 +19,7 @@ namespace Yammerly
         {
             InitializeComponent();
 
-            PresentMainPage(true);
+            PresentMainPage(false);
         }
 
         void PresentMainPage(bool useMock = true)
@@ -28,26 +28,24 @@ namespace Yammerly
             {
                 DependencyService.Register<IDataService, MockService>();
 
-                MainPage = new EmployeesPage();
+                MainPage = new RootPage();
             }
             else
             {
                 DependencyService.Register<IDataService, AzureService>();
 
-                /*
+
                 if (!Settings.IsLoggedIn)
                     DependencyService.Get<IDataService>().Initialize();
 
-                if (Settings.IsLoggedIn)
+                if (!Settings.IsLoggedIn)
                 {
                     MainPage = new LoginPage();
                 }
                 else
                 {
-                    MainPage = new EmployeesPage();
-                }*/
-
-                MainPage = new EmployeesPage();
+                    MainPage = new RootPage();
+                }
             }
         }
 
